@@ -71,6 +71,7 @@ public class LogicalResponse extends VaultResponse {
             this.leaseId = jsonObject.get("lease_id").asString();
             this.renewable = jsonObject.get("renewable").asBoolean();
             this.leaseDuration = jsonObject.get("lease_duration").asLong();
+            this.metadataObject = jsonObject.get("data").asObject().get("metadata").asObject();
         } catch (Exception ignored) {
         }
     }
@@ -85,7 +86,6 @@ public class LogicalResponse extends VaultResponse {
             }
             data = new HashMap<>();
             dataObject = jsonObject.get("data").asObject();
-            metadataObject = jsonObject.get("metadata").asObject();
             System.out.println("[Logical Response] metadataObject: " + metadataObject.toString());
             System.out.println("[Logical Response] version value: " + metadataObject.get("version").toString());
             data.put("version",metadataObject.get("version").toString());
