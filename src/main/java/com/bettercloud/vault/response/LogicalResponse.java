@@ -26,7 +26,6 @@ public class LogicalResponse extends VaultResponse {
     private Long leaseDuration;
     private JsonObject metadataObject = null;
 
-
     /**
      * @param restResponse The raw HTTP response from Vault.
      * @param retries      The number of retry attempts that occurred during the API call (can be zero).
@@ -79,17 +78,13 @@ public class LogicalResponse extends VaultResponse {
     private void parseResponseData(final Logical.logicalOperations operation) {
         try {
             final String jsonString = new String(getRestResponse().getBody(), StandardCharsets.UTF_8);
-            System.out.println("[Logical Response] json str: " + jsonString);
             JsonObject jsonObject = Json.parse(jsonString).asObject();
             if (operation.equals(Logical.logicalOperations.readV2)) {
                 jsonObject = jsonObject.get("data").asObject();
             }
             data = new HashMap<>();
             dataObject = jsonObject.get("data").asObject();
-            System.out.println("[Logical Response] metadataObject: " + metadataObject.toString());
-            System.out.println("[Logical Response] version value: " + metadataObject.get("version").toString());
             data.put("version",metadataObject.get("version").toString());
-            System.out.println("[Logical Response] json str: " + jsonString);
             for (final JsonObject.Member member : dataObject) {
                 final JsonValue jsonValue = member.getValue();
                 if (jsonValue == null || jsonValue.isNull()) {
